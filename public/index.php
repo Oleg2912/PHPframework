@@ -1,5 +1,10 @@
 <?php
 
+use Framework\Http\Request;
+
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
-echo 'dsfdfsdfsdfsdf';
+
+$request = Request::createFromGlobals();
+
+dd($request);
