@@ -7,8 +7,8 @@ class Response
 
     public function __construct(
         public mixed $content,
-        public int $statusCode,
-        public array $headers,
+        public int $statusCode = 200,
+        public array $headers = [],
     ) {}
 
 
