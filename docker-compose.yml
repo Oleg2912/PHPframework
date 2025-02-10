@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: php_app
+    volumes:
+      - ./:/var/www/html
+      - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_server
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./public:/var/www/html
+    depends_on:
+      - app
+    networks:
+      - app_network
+
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
