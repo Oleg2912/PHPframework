@@ -14,12 +14,6 @@ class Kernel
             foreach ($routes as $route) {
                 $collector->addRoute(...$route);
             }
-//            $collector->get('/home', function () {
-//                return new Response("<h1>HELO! dfsdfsdfsdf</h1>");
-//            });
-//            $collector->get('/posts/12', function () {
-//                return new Response("<h1>Posts Posts</h1>");
-//            });
         });
 
         $routeInfo = $dispatcher->dispatch(
@@ -27,10 +21,10 @@ class Kernel
             $request->getUri()
         );
 
-        [$status, $handler, $vars] = $routeInfo;
+        [$status, [$controller, $method], $vars] = $routeInfo;
 
-        //dd($dispatcher);
+        $response = (new $controller())->$method();
 
-        return $handler($vars);
+        return $response;
     }
 }
