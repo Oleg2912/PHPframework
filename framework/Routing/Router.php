@@ -2,17 +2,27 @@
 
 namespace Framework\Routing;
 
+use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
+use Framework\Exceptions\Http\MethodNotAllowedException;
+use Framework\Exceptions\Http\RouteNotFoundException;
 use Framework\Http\Request;
 use function FastRoute\simpleDispatcher;
 
 class Router implements RouterInterface
 {
-
     public function dispatch(Request $request): array
     {
+        [$handlers, $vars] = $this->extractRouteInfo($request);
+        [$controller, $method] = $handlers;
+
+        return [[new $controller, $method], $vars];
+    }
+
+    private function extractRouteInfo(Request $request): array
+    {
         $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            $routes = include APP_PATH.'/routes/web.php';
+            $routes = include APP_PATH . '/routes/web.php';
             foreach ($routes as $route) {
                 $collector->addRoute(...$route);
             }
@@ -23,8 +33,14 @@ class Router implements RouterInterface
             $request->getUri()
         );
 
-        [$status, [$controller, $method], $vars] = $routeInfo;
-
-        return [[new $controller, $method], $vars];
+        switch ($routeInfo[0]) {
+            case Dispatcher::FOUND:
+                return [$routeInfo[1], $routeInfo[2]];
+            case Dispatcher::METHOD_NOT_ALLOWED:
+                $allowedMethods = implode(', ', $routeInfo[1]);
+                throw new MethodNotAllowedException("Supported HTTP methods: $allowedMethods");
+            default:
+                throw new RouteNotFoundException('Route Not Found');
+        }
     }
 }
