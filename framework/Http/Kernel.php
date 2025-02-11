@@ -2,28 +2,19 @@
 
 namespace Framework\Http;
 
-use FastRoute\RouteCollector;
-use function FastRoute\simpleDispatcher;
+use Framework\Routing\RouterInterface;
 
 class Kernel
 {
+    public function __construct(
+        private RouterInterface $router
+    ) {}
+
+
     public function handle(Request $request): Response
     {
-        $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            $routes = include APP_PATH.'/routes/web.php';
-            foreach ($routes as $route) {
-                $collector->addRoute(...$route);
-            }
-        });
-
-        $routeInfo = $dispatcher->dispatch(
-            $request->getMethod(),
-            $request->getUri()
-        );
-
-        [$status, [$controller, $method], $vars] = $routeInfo;
-
-        $response = call_user_func_array([new $controller, $method], $vars);
+        [$routeHandler, $vars] = $this->router->dispatch($request);
+        $response = call_user_func_array($routeHandler, $vars);
 
         return $response;
     }
