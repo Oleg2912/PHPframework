@@ -3,7 +3,10 @@
 use Framework\Http\Kernel;
 use Framework\Http\Request;
 
-require_once dirname(__DIR__).'/vendor/autoload.php';
+define('APP_PATH', dirname(__DIR__));
+
+require_once APP_PATH.'/vendor/autoload.php';
+
 
 
 $request = Request::createFromGlobals();

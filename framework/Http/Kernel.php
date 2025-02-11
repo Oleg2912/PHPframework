@@ -10,12 +10,16 @@ class Kernel
     public function handle(Request $request): Response
     {
         $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            $collector->get('/home', function () {
-                return new Response("<h1>HELO! dfsdfsdfsdf</h1>");
-            });
-            $collector->get('/posts/12', function () {
-                return new Response("<h1>Posts Posts</h1>");
-            });
+            $routes = include APP_PATH.'/routes/web.php';
+            foreach ($routes as $route) {
+                $collector->addRoute(...$route);
+            }
+//            $collector->get('/home', function () {
+//                return new Response("<h1>HELO! dfsdfsdfsdf</h1>");
+//            });
+//            $collector->get('/posts/12', function () {
+//                return new Response("<h1>Posts Posts</h1>");
+//            });
         });
 
         $routeInfo = $dispatcher->dispatch(
