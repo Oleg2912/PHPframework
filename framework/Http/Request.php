@@ -10,7 +10,7 @@ class Request
         private readonly array $postData,
         private readonly array $cookies,
         private readonly array $files,
-        public readonly array $server
+        private readonly array $server
     ) {}
 
     public static function createFromGlobals(): static
@@ -22,5 +22,15 @@ class Request
             files: $_FILES,
             server: $_SERVER
         );
+    }
+
+    public function getUri(): string
+    {
+        return strtok($this->server['REQUEST_URI'], '?');
+    }
+
+    public function getMethod(): string
+    {
+        return $this->server['REQUEST_METHOD'];
     }
 }

@@ -13,16 +13,20 @@ class Kernel
             $collector->get('/home', function () {
                 return new Response("<h1>HELO! dfsdfsdfsdf</h1>");
             });
+            $collector->get('/posts/12', function () {
+                return new Response("<h1>Posts Posts</h1>");
+            });
         });
 
         $routeInfo = $dispatcher->dispatch(
-            $request->server['REQUEST_METHOD'],
-            $request->server['REQUEST_URI']
+            $request->getMethod(),
+            $request->getUri()
         );
 
         [$status, $handler, $vars] = $routeInfo;
 
         //dd($dispatcher);
+
         return $handler($vars);
     }
 }
