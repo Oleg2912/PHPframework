@@ -11,6 +11,13 @@ use function FastRoute\simpleDispatcher;
 
 class Router implements RouterInterface
 {
+
+    /**
+     * @param Request $request
+     * @return array
+     * @throws MethodNotAllowedException
+     * @throws RouteNotFoundException
+     */
     public function dispatch(Request $request): array
     {
         [$handler, $vars] = $this->extractRouteInfo($request);
@@ -24,6 +31,12 @@ class Router implements RouterInterface
         return [$handler, $vars];
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     * @throws MethodNotAllowedException
+     * @throws RouteNotFoundException
+     */
     private function extractRouteInfo(Request $request): array
     {
         $dispatcher = simpleDispatcher(function (RouteCollector $collector) {

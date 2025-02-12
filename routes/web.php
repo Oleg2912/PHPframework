@@ -9,6 +9,6 @@ return [
     Route::get('/home', [HomeController::class, 'index']),
     Route::post('/posts/{id}', [PostController::class, 'show']),
     Route::get('/callable', function () {
-        return new WResponse('callable');
+        return new Response('callable');
     })
 ];
