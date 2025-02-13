@@ -1,6 +1,7 @@
 <?php
 
 namespace Framework\Container;
+use Framework\Exceptions\Container\ContainerException;
 use Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
@@ -10,6 +11,11 @@ class Container implements ContainerInterface
 
     public function add(string $id, string|object $concrete = null): void
     {
+        if (is_null($concrete)) {
+            if (!class_exists($id)) {
+                throw new ContainerException("Class $id not found.");
+            }
+        }
         $this->services[$id] = $concrete;
     }
 
