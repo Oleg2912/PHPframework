@@ -2,9 +2,9 @@
 
 namespace Framework\Routing;
 
+use Framework\Http\Request;
 use Framework\Exceptions\Http\MethodNotAllowedException;
 use Framework\Exceptions\Http\RouteNotFoundException;
-use Framework\Http\Request;
 
 interface RouterInterface
 {

@@ -28,10 +28,9 @@ readonly class Kernel
         } catch (HttpException $exception) {
             $response = new Response(content: $exception->getMessage(), statusCode: $exception->getStatusCode());
         } catch (\Throwable $exception) {
-            dev_exception_handler($exception);
-            //$response = new Response(content: $exception->getMessage(), statusCode: HttpStatusEnum::INTERNAL_SERVER_ERROR->value);
+            //dev_exception_handler($exception);
+            $response = new Response(content: $exception->getMessage(), statusCode: HttpStatusEnum::INTERNAL_SERVER_ERROR->value);
         }
-
 
         return $response;
     }

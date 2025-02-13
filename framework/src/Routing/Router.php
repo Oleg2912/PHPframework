@@ -4,9 +4,9 @@ namespace Framework\Routing;
 
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
+use Framework\Http\Request;
 use Framework\Exceptions\Http\MethodNotAllowedException;
 use Framework\Exceptions\Http\RouteNotFoundException;
-use Framework\Http\Request;
 use function FastRoute\simpleDispatcher;
 
 class Router implements RouterInterface

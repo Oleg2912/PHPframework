@@ -4,7 +4,6 @@ namespace Framework\Http;
 
 class Response
 {
-
     /**
      * @param mixed $content
      * @param int $statusCode
