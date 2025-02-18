@@ -2,10 +2,8 @@
 
 namespace Framework\Tests;
 
-use App\Http\Controllers\HomeController;
 use Framework\Container\Container;
 use Framework\Exceptions\Container\ContainerException;
-use Framework\Routing\Route;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
@@ -14,9 +12,9 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $container->add('route', Route::class);
+        $container->add('Example', Example::class);
 
-        $this->assertInstanceOf(Route::class,  $container->get('route'));
+        $this->assertInstanceOf(Example::class,  $container->get('Example'));
     }
 
     public function test_container_has_exception_ContainerException_if_add_wrong_service()
@@ -32,10 +30,23 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $container->add('route', Route::class);
+        $container->add('Example', Example::class);
 
-        $this->assertTrue($container->has('route'));
+        $this->assertTrue($container->has('Example'));
         $this->assertFalse($container->has('no-class'));
+    }
+
+    public function test_recursively_autowired()
+    {
+        $container = new Container();
+
+        $container->add('ExampleResolve', ExampleResolve::class);
+
+
+        /** @var ExampleResolve $exampleResolve */
+        $exampleResolve = $container->get('ExampleResolve');
+
+        //$this->assertInstanceOf(Example::class,  $exampleResolve->getExample());
     }
 
 }

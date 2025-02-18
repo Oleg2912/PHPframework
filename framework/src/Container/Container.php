@@ -28,7 +28,9 @@ class Container implements ContainerInterface
             $this->add($id);
         }
 
-        return $this->resolve($this->services[$id]);
+        $instance = $this->resolve($this->services[$id]);
+
+        return $instance;
     }
 
     public function has(string $id): bool
@@ -36,8 +38,22 @@ class Container implements ContainerInterface
         return isset($this->services[$id]);
     }
 
-    public function resolve()
+    private function resolve($class)
     {
+        $reflectionClass = new \ReflectionClass($class);
 
+        $constructor = $reflectionClass->getConstructor();
+
+        if (is_null($constructor)) {
+            return $reflectionClass->newInstance();
+        }
+
+        $constructorParams = $constructor->getParameters();
+
+        $classDependencies = $this->resolveClassDependencies($constructorParams);
+
+        $instance = $reflectionClass->newInstanceArgs($classDependencies);
+
+        return $instance;
     }
 }
