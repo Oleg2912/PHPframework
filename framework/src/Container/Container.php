@@ -26,6 +26,6 @@ class Container implements ContainerInterface
 
     public function has(string $id): bool
     {
-        return !empty($this->services[$id]);
+        return isset($this->services[$id]);
     }
 }

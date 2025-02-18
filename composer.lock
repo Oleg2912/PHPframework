@@ -115,7 +115,7 @@
             "dist": {
                 "type": "path",
                 "url": "framework",
-                "reference": "4c79bd81d7f32f62453ce565db15d4ca6592341d"
+                "reference": "7ace5c037f1d5f1e9c9a8556e4c14c2857176ba1"
             },
             "require": {
                 "nikic/fast-route": "^1.3",
@@ -133,7 +133,7 @@
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Framework\\Tests": "tests"
+                    "Framework\\Tests\\": "tests"
                 }
             },
             "transport-options": {
