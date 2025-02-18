@@ -40,13 +40,12 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $container->add('ExampleResolve', ExampleResolve::class);
-
+        $container->add('test', ExampleResolve::class);
 
         /** @var ExampleResolve $exampleResolve */
-        $exampleResolve = $container->get('ExampleResolve');
+        $exampleResolve = $container->get('test');
 
-        //$this->assertInstanceOf(Example::class,  $exampleResolve->getExample());
+        $this->assertInstanceOf(Example::class,  $exampleResolve->getExample());
     }
 
 }

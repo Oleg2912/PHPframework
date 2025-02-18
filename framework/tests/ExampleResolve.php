@@ -2,6 +2,10 @@
 
 namespace Framework\Tests;
 
+
+/**
+ *  Класс используется только для тестирования
+ */
 class ExampleResolve
 {
     public function __construct(
