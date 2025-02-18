@@ -21,11 +21,23 @@ class Container implements ContainerInterface
 
     public function get(string $id): mixed
     {
-        return new $this->services[$id];
+        if (!$this->has($id)) {
+            if (!class_exists($id)) {
+                throw new ContainerException("Class $id could not be resolved.");
+            }
+            $this->add($id);
+        }
+
+        return $this->resolve($this->services[$id]);
     }
 
     public function has(string $id): bool
     {
         return isset($this->services[$id]);
+    }
+
+    public function resolve()
+    {
+
     }
 }
